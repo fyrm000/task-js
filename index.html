@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/icono.min.css" />
     <title>Tareas</title>
   </head>
   <body>
@@ -51,25 +52,32 @@
       </div>
     </nav>
     <div class="container mt-4" id="app">
+      <div class="card">
+        <div class="card-body">
+          Porcentaje Completado
+        </div>
+        <div class="card-footer" id="progress">
+          
+        </div>
+      </div>
       <div class="row mt-4">
         <div class="col-sm-6" id="addTask"></div>
         <div class="col-sm-6" id="listTask">
-          
+          <div class="card">
             <ul class="list-group">
               <h4>Detalles del Equipo:</h4>
               <table class="table">
                 <thead>
-                    <tr>
-                        <th>Tarea</th>
-                        <th>Prioridad</th>
-                    </tr>
+                  <tr>
+                    <th>Tarea</th>
+                    <th>Prioridad</th>
+                    <th>Acción</th>
+                  </tr>
                 </thead>
-                <tbody id="tableTask">
-
-                </tbody>
+                <tbody id="tableTask"></tbody>
               </table>
             </ul>
-          
+          </div>
         </div>
       </div>
     </div>
@@ -86,5 +94,6 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"
   ></script>
+  <script src="js/uuidv4.min.js"></script>
   <script src="js/app.js"></script>
 </html>
