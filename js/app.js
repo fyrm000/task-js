@@ -1,3 +1,10 @@
+let por = 0;
+
+const barStatus = (total, completed) =>{
+   por = (100/total)*completed;
+  console.log(por);
+}
+
 if (JSON.parse(localStorage.getItem("task")) === null) {
   var tasks = [];
   var taskCompleted = {
@@ -7,13 +14,24 @@ if (JSON.parse(localStorage.getItem("task")) === null) {
 } else {
   var tasks = JSON.parse(localStorage.getItem("task"));
   var taskCompleted = JSON.parse(localStorage.getItem("taskCompleted"));
+  barStatus(taskCompleted.total, taskCompleted.completed)
 }
 
 let task = {}; //Objetos
 let validN = true;
 let validS = true;
+
 console.log(taskCompleted);
 console.log("ok");
+
+
+//Calcular porcentaje
+
+
+
+//End Calcular porcentaje
+
+//Barra porcentaje
 
 const bar = () => {
   let template = `<div class="progress">
@@ -29,6 +47,9 @@ const bar = () => {
 
   $("#progress").html(template);
 };
+
+
+//End Barra de porcentaje
 
 const start = () => {
   $("#title").html("Tareas :)");
@@ -65,7 +86,7 @@ const start = () => {
 };
 
 //Validar Campos
-//TODO crear variable que almacene el nombre y select y los vuelva a cargar para evitar volver a escribir los datos correctos
+
 const isValid = (name, select) => {
   if (name === "") {
     validN = false;
@@ -99,7 +120,7 @@ const getTask = () => {
     taskList.forEach(task => {
       template += `
         <tr> 
-        <td style="display:none" class="idTask">${task.id}</td>
+        <td style="display:none" class="idTask disable">${task.id}</td>
         <td>${task.name}</td>
         <td><span class="badge badge-warning">${task.priority}</span>
         </td>
@@ -116,7 +137,7 @@ const getTask = () => {
 
 $(document).ready(function() {
   //Agregar nueva tarea
-
+  start();
   $("#formTask").submit(function(e) {
     e.preventDefault();
     console.log(taskCompleted);
@@ -125,12 +146,10 @@ $(document).ready(function() {
     let id = uuidv4();
     isValid(name, pri);
     if (validN === true && validS === true) {
-      start();
-
-      if(taskCompleted.total == 0){
+      if (taskCompleted.total == 0) {
         taskCompleted.total = 1;
-      }else{
-        taskCompleted.total = taskCompleted.total+1;
+      } else {
+        taskCompleted.total = taskCompleted.total + 1;
       }
 
       task.id = id;
@@ -149,6 +168,8 @@ $(document).ready(function() {
   //End Agregar nueva tarea
 });
 
+//Borrar Tareas
+
 $(document).on("click", "#deleteTask", function() {
   let iid = $(this)
     .closest("tr")
@@ -161,8 +182,8 @@ const deleteTask = iid => {
   let i = tasks.findIndex(task => task.id == iid);
   if (i !== -1) {
     tasks.splice(i, 1);
-    taskCompleted.total - 1;
-    localStorage.setItem("taskCompleted", JSON.stringify(taskCompleted))
+    taskCompleted.total = taskCompleted.total - 1;
+    localStorage.setItem("taskCompleted", JSON.stringify(taskCompleted));
     localStorage.setItem("task", JSON.stringify(tasks));
     getTask();
   } else {
@@ -170,12 +191,39 @@ const deleteTask = iid => {
   }
 };
 
-$(document).on("click", "#completeTask", function() {});
+//End Borrar Tareas
 
-const completeTask = () => {};
+//Completar Tarea
+
+$(document).on("click", "#completeTask", function() {
+  console.log("Completed Task");
+  let iid = $(this)
+    .closest("tr")
+    .children("td.idTask")
+    .text();
+  console.log(iid);
+  completeTask(iid);
+});
+
+const completeTask = iid => {
+  let i = tasks.findIndex(task => task.id == iid);
+  if (i !== 1) {
+    tasks.splice(i, 1);
+    taskCompleted.completed = taskCompleted.completed + 1;
+    localStorage.setItem("taskCompleted", JSON.stringify(taskCompleted));
+    getTask();
+  } else {
+    console.log("Error al completar la tarea");
+  }
+};
+
+//End Completar Tarea
 
 //Ejecutables
 
 getTask();
 start();
 bar();
+
+
+//End Ejecutables
